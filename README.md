@@ -1,33 +1,60 @@
-# JS FX Algorithm Lab
+<div align="center">
+  <img src="https://img.shields.io/github/languages/top/unamatasanatarai/js-fx-algorithm-lab?style=for-the-badge&color=f7df1e" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Dependencies-Zero-brightgreen?style=for-the-badge" alt="Zero Dependencies" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License" />
+</div>
 
-> Text effects and classic algorithms built with vanilla JavaScript.
+<h1 align="center">🧪 JS FX Algorithm Lab</h1>
 
-[![See it live](https://img.shields.io/badge/See_it_Live-%F0%9F%8C%90-blue?style=for-the-badge)](https://unamatasanatarai.github.io/js-fx-algorithm-lab/)
+> **Text effects and classic algorithms built with vanilla JavaScript.**
 
-Welcome to my algorithm lab! This repository is a growing collection of visual text effects, procedural generation, and classic algorithmic simulations, all built without external libraries.
+<div align="center">
+  <a href="https://unamatasanatarai.github.io/js-fx-algorithm-lab/">
+    <img src="https://img.shields.io/badge/%F0%9F%8C%90_SEE_IT_LIVE-Click_Here-0688fa?style=for-the-badge&logo=googlechrome&logoColor=white" alt="See It Live" />
+  </a>
+</div>
 
-## 🧪 Experiments 
+<br />
 
-*   **[1D Elementary Cellular Automata](elementary_cellular_automata.html)** - Generating complex patterns from simple rulesets.
-*   **[Diamond-Square Terrain Generation](diamond_square_terrain.html)** - Creating procedural heightmaps and landscapes.
-*   **[Fractal Fire Simulation](fractal_fire_simulation.html)** - Combining procedural terrain techniques to simulate dynamic fire.
-*   **[Doom Fire Effect](doom_fire_effect.html)** - A recreation of the classic PSX Doom fire algorithm.
-*   **[Conway's Game of Life](conways_game_of_life.html)** - The legendary 2D cellular automaton.
-*   **[Bresenham's Line Algorithm](bresenhams_line_algorithm.html)** - An implementation of the classic line drawing algorithm.
-*   **[Falling Sand Simulation](falling_sand_simulation.html)** - A particle physics simulation based on cellular automata.
-*   **[2D Water Ripples](2d_water_ripples.html)** - Simulating wave propagation in a 2D grid.
+Welcome to the **JS FX Algorithm Lab**! This repository is a curated collection of visual text effects, procedural generation techniques, and classic algorithmic simulations. 
+
+Everything here is built strictly from scratch utilizing **Vanilla JavaScript** and **HTML DOM manipulation**. 
+
+**Note on Rendering:** There is absolutely no `<canvas>`, WebGL, or SVG used in these experiments. Every single visual effect is achieved purely through dynamically updating raw text and fonts within standard HTML elements! No external libraries, frameworks, or dependencies are used.
+## 🌟 The Experiments
+
+Explore the live sandbox containing the following visual experiments:
+
+| Algorithm | Description | Concept |
+| :--- | :--- | :--- |
+| **[1D Elementary Cellular Automata](https://unamatasanatarai.github.io/js-fx-algorithm-lab/elementary_cellular_automata.html)** | Generates complex mathematical patterns from simple rulesets. | Cellular Automaton |
+| **[Diamond-Square Terrain](https://unamatasanatarai.github.io/js-fx-algorithm-lab/diamond_square_terrain.html)** | Creates procedural heightmaps and rugged landscapes. | Procedural Generation |
+| **[Fractal Fire Simulation](https://unamatasanatarai.github.io/js-fx-algorithm-lab/fractal_fire_simulation.html)** | Combines procedural terrain techniques to simulate dynamic fire. | Particle Systems |
+| **[Doom Fire Effect](https://unamatasanatarai.github.io/js-fx-algorithm-lab/doom_fire_effect.html)** | A pixel-perfect recreation of the classic PSX Doom fire algorithm. | Cellular Automaton |
+| **[Conway's Game of Life](https://unamatasanatarai.github.io/js-fx-algorithm-lab/conways_game_of_life.html)** | The foundational 2D cellular automaton simulating cellular life. | Cellular Automaton |
+| **[Bresenham's Line](https://unamatasanatarai.github.io/js-fx-algorithm-lab/bresenhams_line_algorithm.html)** | A highly efficient implementation of the classic line-drawing algorithm. | Computer Graphics |
+| **[Falling Sand](https://unamatasanatarai.github.io/js-fx-algorithm-lab/falling_sand_simulation.html)** | A grid-based physics engine simulating various falling materials. | Cellular Automaton |
+| **[2D Water Ripples](https://unamatasanatarai.github.io/js-fx-algorithm-lab/2d_water_ripples.html)** | Simulates wave propagation and interference in a 2D water grid. | Math & Physics |
 
 ## 🛠 Tech Stack
-- Vanilla JavaScript
-- HTML DOM Manipulation
-- No external dependencies
+
+This project prioritizes foundational engineering skills:
+- **Vanilla JavaScript (ES6+)**
+- **HTML DOM Text & Vanilla CSS** (Pure font/ASCII rendering, no graphics APIs)
+- **Zero Dependencies** 
 
 ## 🚀 Running Locally
 
-Clone this repository and open `index.html` in any modern web browser.
+Want to tinker with the algorithms yourself? Cloning and running the project is instant since there are no installations required.
 
 ```bash
+# 1. Clone this repository
 git clone https://github.com/unamatasanatarai/js-fx-algorithm-lab.git
+
+# 2. Enter the directory
 cd js-fx-algorithm-lab
-# Open index.html in your browser
+
+# 3. Open it in your default browser
+# (Or just double-click index.html in your file explorer)
+open index.html
 ```

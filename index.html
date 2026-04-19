@@ -1,12 +1,352 @@
-here are some classic text effects and algorithms written in JS
+<!DOCTYPE html>
+<html lang="en">
 
-<ol>
-<li><a href="elementary_cellular_automata.html">1D Elementary Cellular Automata</a>
-<li><a href="diamond_square_terrain.html">Diamond-Square Terrain Generation</a>
-<li><a href="fractal_fire_simulation.html">Fractal Fire Simulation</a>
-<li><a href="doom_fire_effect.html">Doom Fire Effect</a>
-<li><a href="conways_game_of_life.html">Conway's Game of Life</a>
-<li><a href="bresenhams_line_algorithm.html">Bresenham's Line Algorithm</a>
-<li><a href="falling_sand_simulation.html">Falling Sand Simulation</a>
-<li><a href="2d_water_ripples.html">2D Water Ripples</a>
-</ol>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="A curated lab of classical algorithms and procedural effects implemented in vanilla JavaScript.">
+    <title>JS FX Algorithm Lab</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --sidebar-bg: rgba(20, 22, 28, 0.7);
+            --sidebar-border: rgba(255, 255, 255, 0.05);
+            --text-primary: #c5c6c7;
+            --text-heading: #ffffff;
+            --accent-color: #66fcf1;
+            --accent-hover: #45a29e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(102, 252, 241, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(69, 162, 158, 0.05), transparent 25%);
+        }
+
+        /* Sidebar Glassmorphism */
+        .sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 1px solid var(--sidebar-border);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+            padding: 2rem 0;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem 2rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .logo h1 {
+            color: var(--text-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            font-size: 0.85rem;
+            color: var(--accent-hover);
+            line-height: 1.4;
+        }
+
+        .nav-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 1rem;
+        }
+
+        /* Webkit scrollbar for sidebar */
+        .nav-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .nav-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .nav-list::-webkit-scrollbar-thumb {
+            background: var(--sidebar-border);
+            border-radius: 10px;
+        }
+
+        .menu-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+            margin: 0 1rem 1rem 1rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* Hover animations */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background-color: var(--accent-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: center;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-heading);
+            padding-left: 1.5rem;
+        }
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            transform: scaleY(0.7);
+        }
+
+        .nav-link.active {
+            background-color: rgba(102, 252, 241, 0.1);
+            color: var(--accent-color);
+            font-weight: 600;
+            padding-left: 1.5rem;
+        }
+
+        /* Main Display Area */
+        .main-display {
+            flex-grow: 1;
+            position: relative;
+            background-color: #000;
+        }
+
+        .display-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .display-frame.loaded {
+            opacity: 1;
+        }
+
+        .splash-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        .splash-screen h2 {
+            color: var(--sidebar-border);
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Mobile specific bits */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                flex-shrink: 0;
+                padding: 1rem 0;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            }
+
+            .logo {
+                padding: 0 1rem 1rem 1rem;
+                margin-bottom: 0.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo p {
+                display: none;
+            }
+
+            .nav-list {
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-bottom: 0.5rem;
+            }
+
+            .nav-link {
+                white-space: nowrap;
+                margin-right: 0.5rem;
+                margin-bottom: 0;
+            }
+
+            .menu-label {
+                display: none;
+            }
+
+            .nav-link::before {
+                width: 100%;
+                height: 3px;
+                top: auto;
+                bottom: 0;
+                transform-origin: center;
+                transform: scaleX(0);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                padding-left: 1rem;
+                background-color: rgba(102, 252, 241, 0.1);
+            }
+
+            .nav-link:hover::before,
+            .nav-link.active::before {
+                transform: scaleX(0.7);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" aria-label="Main Navigation">
+        <div class="logo">
+            <h1>JS FX Lab</h1>
+            <p>Classic text effects and algorithms built with vanilla JavaScript.</p>
+        </div>
+
+        <div class="menu-label">Experiments</div>
+
+        <div class="nav-list" id="nav-list">
+            <a href="elementary_cellular_automata.html" class="nav-link" id="link-ca">1D Cellular Automata</a>
+            <a href="diamond_square_terrain.html" class="nav-link" id="link-ds">Diamond-Square Terrain</a>
+            <a href="fractal_fire_simulation.html" class="nav-link" id="link-ff">Fractal Fire</a>
+            <a href="doom_fire_effect.html" class="nav-link" id="link-df">Doom Fire Effect</a>
+            <a href="conways_game_of_life.html" class="nav-link" id="link-cg">Conway's Game of Life</a>
+            <a href="bresenhams_line_algorithm.html" class="nav-link" id="link-bl">Bresenham's Line</a>
+            <a href="falling_sand_simulation.html" class="nav-link" id="link-fs">Falling Sand</a>
+            <a href="2d_water_ripples.html" class="nav-link" id="link-wr">2D Water Ripples</a>
+        </div>
+
+        <div class="sidebar-footer"
+            style="padding: 1.5rem 1rem 0 1rem; margin-top: auto; border-top: 1px solid var(--sidebar-border);">
+            <a href="https://github.com/unamatasanatarai/js-fx-algorithm-lab" target="_blank" class="github-link"
+                style="display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text-primary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(255,255,255,0.03);">
+                <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                </svg>
+                View on GitHub
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area with Iframe -->
+    <main class="main-display">
+        <div class="splash-screen" id="splash">
+            <h2>Select an Experiment</h2>
+        </div>
+        <iframe src="about:blank" class="display-frame" id="viewer" title="Algorithm Viewer"></iframe>
+    </main>
+
+    <!-- Client-side Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.nav-link');
+            const viewer = document.getElementById('viewer');
+            const splash = document.getElementById('splash');
+
+            // Handle iframe load event to trigger fade-in
+            viewer.addEventListener('load', () => {
+                if (viewer.src !== 'about:blank' && !viewer.src.endsWith('about:blank')) {
+                    viewer.classList.add('loaded');
+                }
+            });
+
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent standard page load
+
+                    // Remove active class from all
+                    links.forEach(l => l.classList.remove('active'));
+
+                    // Add active class to clicked link
+                    link.classList.add('active');
+
+                    // Hide splash screen
+                    splash.style.opacity = '0';
+
+                    // Reset viewer opacity for fade-in effect
+                    viewer.classList.remove('loaded');
+
+                    // Small delay to allow fade out before loading new source
+                    setTimeout(() => {
+                        viewer.src = link.href;
+                    }, 50);
+                });
+            });
+
+            // Optionally auto-load the first link:
+            links[0].click();
+        });
+    </script>
+
+</body>
+
+</html>
